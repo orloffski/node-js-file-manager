@@ -1,0 +1,10 @@
+{
+	"name":"file_manager",
+	"version": "1.0.0",
+	"type": "module",
+
+	"scripts" : {
+		"start" : "node ./start.js",
+		"dev" : "node ./start.js --username=Anonimous"
+	}
+}
