@@ -1,3 +1,4 @@
+import { ls_command } from "./file_system.js";
 import { checkCommand, commands } from "./parser.js";
 
 export const run = async(command_line, currDirName) => {
@@ -6,25 +7,24 @@ export const run = async(command_line, currDirName) => {
 		let engineResponse = {};
 
 		if(checkCommand(command_line)){
-			const result = runCommand(command_line);
-
-			engineResponse = {
-				success: result
-			};
-
-			resolve(engineResponse);
+			runCommand(command_line, currDirName)
+				.then(result => {
+					engineResponse = {
+						success: result
+					};
+					resolve(engineResponse);
+				})
 		}else{
 			engineResponse = {
 				success: false
 			};
-
 			resolve(engineResponse);
 		}
 	})
 }
 
 
-const runCommand = (command_line) => {
+const runCommand = async(command_line, currDirName) => {
 	switch(command_line.split(' ')[0]) {
 		case commands[0]:  // up
 			console.log(commands[0]);
@@ -33,8 +33,7 @@ const runCommand = (command_line) => {
 		  	console.log(commands[1]);
 			return true;
 		case commands[2]:  // ls
-			console.log(commands[2]);
-		  	return true;
+			return await ls_command(currDirName);
 		case commands[3]:  // cat
 		  	console.log(commands[3]);
 			return true;

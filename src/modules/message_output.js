@@ -11,6 +11,6 @@ export const printCurrentDir = (currDirName) => {
 	console.log(`You are currently in ${currDirName}`);
 }
 
-export const printOperationFiled = () => {
+export const printOperationFailed = () => {
 	console.error('Operation failed');
 }

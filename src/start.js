@@ -25,7 +25,7 @@ parser.parseUserName(argv.splice(2)[0])
 			engine.run(input, currDirName)
 				.then(engineResponse => {
 					if(!engineResponse.success)
-						printLog.printOperationFiled();
+						printLog.printOperationFailed();
 
 					printLog.printCurrentDir(currDirName);
 					read.resume();
