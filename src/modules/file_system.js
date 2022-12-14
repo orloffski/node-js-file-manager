@@ -1,5 +1,8 @@
 import { readdir } from 'node:fs/promises';
 import fs from 'node:fs/promises';
+import chdir from 'node:process';
+import { access, constants } from 'node:fs/promises';
+import path from 'node:path';
 
 export const ls_command = async(currentDir) => {
 	try {
@@ -12,18 +15,25 @@ export const ls_command = async(currentDir) => {
 				type: ''
 			};
 
-			const stats = fs.stat(file);
+			console.log(path.join(currentDir, file));
 
-			if((await stats).isFile()){
-				fileItem.type = 'file';
-			}
+			if(await access(path.join(currentDir, file), constants.F_OK)
+				.then(value => true)
+				.catch(err => false)){
 
-			if((await stats).isDirectory()){
-				fileItem.type = 'directory';
-			}
+				await fs.stat(file).then(stats => {
+					if(stats.isFile()){
+						fileItem.type = 'file';
+					}
 
-			if(!(await stats).isSymbolicLink()){
-				arrayForOutput.push(fileItem);
+					if(stats.isDirectory()){
+						fileItem.type = 'directory';
+					}
+
+					if(stats.isDirectory() || stats.isFile()){
+						arrayForOutput.push(fileItem);
+					}
+				});
 			}
 		}
 
@@ -41,6 +51,16 @@ export const ls_command = async(currentDir) => {
 
 		return true;
 	}catch (err){
+		return false;
+	}
+}
+
+export const up_command = async(currentDir) => {
+	try{
+		chdir(path.join(currentDir,'../'));
+
+		return true;
+	}catch(err){
 		return false;
 	}
 }

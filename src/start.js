@@ -8,11 +8,10 @@ import * as printLog from './modules/message_output.js';
 import * as engine from './modules/command_engine.js';
 
 chdir(os.homedir());
-const currDirName = cwd();
 
 parser.parseUserName(argv.splice(2)[0])
 	.then(username => {
-		printLog.printHello(username, currDirName);
+		printLog.printHello(username, cwd());
 
 		const read = readline.createInterface({ input, output })
 		read.on('line', (input) => {
@@ -22,12 +21,12 @@ parser.parseUserName(argv.splice(2)[0])
 			}
 
 			read.pause();
-			engine.run(input, currDirName)
+			engine.run(input, cwd())
 				.then(engineResponse => {
 					if(!engineResponse.success)
 						printLog.printOperationFailed();
 
-					printLog.printCurrentDir(currDirName);
+					printLog.printCurrentDir(cwd());
 					read.resume();
 				});
 		})

@@ -1,9 +1,8 @@
-import { ls_command } from "./file_system.js";
+import { ls_command, up_command } from "./file_system.js";
 import { checkCommand, commands } from "./parser.js";
 
 export const run = async(command_line, currDirName) => {
 	return new Promise((resolve, reject) => {
-		console.log(`Received: ${command_line}`);
 		let engineResponse = {};
 
 		if(checkCommand(command_line)){
@@ -27,8 +26,7 @@ export const run = async(command_line, currDirName) => {
 const runCommand = async(command_line, currDirName) => {
 	switch(command_line.split(' ')[0]) {
 		case commands[0]:  // up
-			console.log(commands[0]);
-			return true;
+			return await up_command(currDirName);
 		case commands[1]:  // cd
 		  	console.log(commands[1]);
 			return true;
