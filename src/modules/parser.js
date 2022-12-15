@@ -21,3 +21,19 @@ export const checkCommand = (command_line) => {
 
 	return false;
 }
+
+export const getDestination = (command_line) => {
+	let delimiter;
+
+	if(!command_line.includes('\'') && !command_line.includes('"')){
+		return command_line.split(' ')[1];
+	}
+
+	if(command_line.includes('\'')){
+		delimiter = '\'';
+	}else if(command_line.includes('\"')){
+		delimiter = '\"';
+	}
+
+	return command_line.split(delimiter)[1];
+}

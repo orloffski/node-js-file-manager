@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import { chdir, cwd } from 'node:process';
 import { access, constants } from 'node:fs/promises';
 import path from 'node:path';
+import * as parser from './parser.js';
 
 export const ls_command = async(currentDir) => {
 	try {
@@ -65,7 +66,8 @@ export const up_command = async(currentDir) => {
 
 export const cd_command = async(command_line) => {
 	try{
-		const destination = command_line.split(' ')[1];
+		const destination = parser.getDestination(command_line);
+
 		if(!destination){
 			return false;
 		}
@@ -85,6 +87,7 @@ export const cd_command = async(command_line) => {
 			return true;
 		}
 	}catch(err){
+		console.log(err);
 		return false;
 	}
 }
