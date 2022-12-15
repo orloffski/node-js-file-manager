@@ -26,3 +26,7 @@ export const printEOL = (data_for_print) => {
 export const printCpus = (data_for_print) => {
 	console.log(`This PC have ${data_for_print.cpus} logical processors: ${data_for_print.modelInfo}`);
 }
+
+export const printHomeDir = (data_for_print) => {
+	console.log(`Homedir for current user is: ${data_for_print}`);
+}

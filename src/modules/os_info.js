@@ -16,6 +16,9 @@ export const getInfo = async(command_line) => {
 				const cpu = os.cpus();
 				printLog.printCpus({cpus: cpu.length, modelInfo: cpu[0].model});
 				return true;
+			case '--homedir':
+				printLog.printHomeDir(os.homedir());
+				return true;
 		}
 
 		return true;
