@@ -34,3 +34,7 @@ export const printHomeDir = (data_for_print) => {
 export const printUserName = (data_for_print) => {
 	console.log(`Current user is: ${data_for_print}`);
 }
+
+export const printArch = (data_for_print) => {
+	console.log(`PC architecture is: ${data_for_print}`);
+}

@@ -23,6 +23,9 @@ export const getInfo = async(command_line) => {
 				const user = os.userInfo();
 				printLog.printUserName(user.username)
 				return true;
+			case '--architecture':
+				printLog.printArch(os.arch());
+				return true;
 		}
 
 		return true;
