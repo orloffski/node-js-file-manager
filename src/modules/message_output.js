@@ -30,3 +30,7 @@ export const printCpus = (data_for_print) => {
 export const printHomeDir = (data_for_print) => {
 	console.log(`Homedir for current user is: ${data_for_print}`);
 }
+
+export const printUserName = (data_for_print) => {
+	console.log(`Current user is: ${data_for_print}`);
+}

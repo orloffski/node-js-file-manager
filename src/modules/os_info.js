@@ -19,6 +19,10 @@ export const getInfo = async(command_line) => {
 			case '--homedir':
 				printLog.printHomeDir(os.homedir());
 				return true;
+			case '--username':
+				const user = os.userInfo();
+				printLog.printUserName(user.username)
+				return true;
 		}
 
 		return true;
