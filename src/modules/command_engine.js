@@ -1,4 +1,4 @@
-import { ls_command, up_command } from "./file_system.js";
+import * as fs from "./file_system.js";
 import { checkCommand, commands } from "./parser.js";
 
 export const run = async(command_line, currDirName) => {
@@ -26,12 +26,11 @@ export const run = async(command_line, currDirName) => {
 const runCommand = async(command_line, currDirName) => {
 	switch(command_line.split(' ')[0]) {
 		case commands[0]:  // up
-			return await up_command(currDirName);
+			return await fs.up_command(currDirName);
 		case commands[1]:  // cd
-		  	console.log(commands[1]);
-			return true;
+		  	return await fs.cd_command(command_line);
 		case commands[2]:  // ls
-			return await ls_command(currDirName);
+			return await fs.ls_command(currDirName);
 		case commands[3]:  // cat
 		  	console.log(commands[3]);
 			return true;

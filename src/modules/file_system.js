@@ -1,6 +1,6 @@
 import { readdir } from 'node:fs/promises';
 import fs from 'node:fs/promises';
-import chdir from 'node:process';
+import { chdir, cwd } from 'node:process';
 import { access, constants } from 'node:fs/promises';
 import path from 'node:path';
 
@@ -14,8 +14,6 @@ export const ls_command = async(currentDir) => {
 				name: file,
 				type: ''
 			};
-
-			console.log(path.join(currentDir, file));
 
 			if(await access(path.join(currentDir, file), constants.F_OK)
 				.then(value => true)
@@ -60,6 +58,32 @@ export const up_command = async(currentDir) => {
 		chdir(path.join(currentDir,'../'));
 
 		return true;
+	}catch(err){
+		return false;
+	}
+}
+
+export const cd_command = async(command_line) => {
+	try{
+		const destination = command_line.split(' ')[1];
+		if(!destination){
+			return false;
+		}
+
+		if(destination == '..'){
+			return up_command(cwd());
+		}
+
+		if(path.isAbsolute(destination)){
+			chdir(destination);
+			return true;
+		}else if(destination[destination.length - 1] == ':'){
+			chdir(path.join(destination, '/'));
+			return true;
+		}else{
+			chdir(path.join(cwd(), destination));
+			return true;
+		}
 	}catch(err){
 		return false;
 	}
