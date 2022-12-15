@@ -1,4 +1,5 @@
 import * as fs from "./file_system.js";
+import * as os from "./os_info.js";
 import { checkCommand, commands } from "./parser.js";
 
 export const run = async(command_line, currDirName) => {
@@ -50,8 +51,7 @@ const runCommand = async(command_line, currDirName) => {
 		  	console.log(commands[8]);
 			return true;
 		case commands[9]:  // os
-		  	console.log(commands[9]);
-			return true;
+		  	return os.getInfo(command_line);
 		case commands[10]:  // hash
 		  	console.log(commands[10]);
 			return true;
