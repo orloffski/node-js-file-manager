@@ -70,10 +70,40 @@ export const checkFileDestination = async(filePathString) => {
 	}
 }
 
-const getPathAbsolute = (pathString) => {
+export const checkFolderDestination = async(filePathString) => {
+	try{
+		const filePath = getPathAbsolute(filePathString);
+
+		if(await access(filePath, constants.R_OK)
+			.then(value => true)
+			.catch(err => false)){
+
+			const check = await fs.stat(filePath)
+				.then(stats => {
+					if(!stats.isDirectory()){
+						return false;
+					}
+
+					return true;
+				})
+				.catch(err => {
+					return false;
+				})
+
+			return check;
+		}
+	}catch(err){
+		return false;
+	}
+}
+
+export const getPathAbsolute = (pathString) => {
 	if(path.isAbsolute(pathString)){
 		return pathString;
+	}else if(pathString[pathString.length - 1] == ':'){
+		return path.join(pathString, '/');
 	}else{
 		return path.join(cwd(), pathString);
 	}
 }
+
