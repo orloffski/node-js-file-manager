@@ -1,10 +1,11 @@
+import fs from 'node:fs';
 import fsPromises from 'node:fs/promises';
 
-import { checkFileDestination, getPathAbsolute, getDestination } from './parser.js';
+import { checkFileDestination, getDestination } from './parser.js';
 
 export const cat = (command_line) => {
 	return new Promise((resolve, reject) => {
-		const filePath = getDestination(command_line);
+		const filePath = getDestination(command_line, 1);
 
 		if(!checkFileDestination(filePath)
 			.then(value => value)
@@ -29,7 +30,7 @@ export const cat = (command_line) => {
 
 export const add = (command_line) => {
 	return new Promise((resolve, reject) => {
-		const filePath = getDestination(command_line);
+		const filePath = getDestination(command_line, 1);
 
 		if(!checkFileDestination(filePath)
 			.then(value => value)

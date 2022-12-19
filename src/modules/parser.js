@@ -27,7 +27,7 @@ export const checkCommand = (command_line) => {
 	return false;
 }
 
-export const getDestination = (command_line) => {
+export const getDestination = (command_line, number) => {
 	let delimiter;
 
 	if(!command_line.includes('\'') && !command_line.includes('"')){
@@ -40,7 +40,7 @@ export const getDestination = (command_line) => {
 		delimiter = '\"';
 	}
 
-	return command_line.split(delimiter)[1];
+	return command_line.split(delimiter)[number];
 }
 
 export const checkFileDestination = async(filePathString) => {
@@ -106,4 +106,3 @@ export const getPathAbsolute = (pathString) => {
 		return path.join(cwd(), pathString);
 	}
 }
-
