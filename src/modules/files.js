@@ -96,8 +96,6 @@ export const copy = (command_line) => {
 
 		const fileName = path.basename(fileSource);
 
-		console.log(path.join(fileDirectory, fileName));
-
 		fsPromises.open(path.join(fileDirectory, fileName), 'w')
 			.then(value => {
 				const readStream = fs.createReadStream(fileSource);

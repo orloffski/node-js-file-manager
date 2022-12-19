@@ -28,19 +28,13 @@ export const checkCommand = (command_line) => {
 }
 
 export const getDestination = (command_line, numberFirst, numberSecond) => {
-	let delimiter;
-
-	if(!command_line.includes('\'') && !command_line.includes('"')){
+	if(!command_line.includes('"')){
 		return {first: command_line.split(' ')[1], second: command_line.split(' ')[2]};
 	}
 
-	if(command_line.includes('\'')){
-		delimiter = '\'';
-	}else if(command_line.includes('\"')){
-		delimiter = '\"';
+	if(command_line.includes('\"')){
+		return {first: command_line.split('"')[numberFirst], second: command_line.split('"')[numberSecond]};
 	}
-
-	return {first: command_line.split(delimiter)[numberFirst], second: command_line.split(delimiter)[numberSecond]};
 }
 
 export const checkFileDestination = async(filePathString) => {
