@@ -1,3 +1,8 @@
+import fs from 'node:fs/promises';
+import { access, constants } from 'node:fs/promises';
+import path from 'node:path';
+import { cwd } from 'node:process';
+
 export const commands = ['up', 'cd', 'ls', 'cat', 'add', 'rn', 'cp', 'mv', 'rm', 'os', 'hash', 'compress', 'decompress'];
 
 export const parseUserName = async(argvString) => {
@@ -36,4 +41,39 @@ export const getDestination = (command_line) => {
 	}
 
 	return command_line.split(delimiter)[1];
+}
+
+export const checkFileDestination = async(filePathString) => {
+	try{
+		const filePath = getPathAbsolute(filePathString);
+
+		if(await access(filePath, constants.R_OK)
+			.then(value => true)
+			.catch(err => false)){
+
+			const check = await fs.stat(filePath)
+				.then(stats => {
+					if(!stats.isFile()){
+						return false;
+					}
+
+					return true;
+				})
+				.catch(err => {
+					return false;
+				})
+
+			return check;
+		}
+	}catch(err){
+		return false;
+	}
+}
+
+const getPathAbsolute = (pathString) => {
+	if(path.isAbsolute(pathString)){
+		return pathString;
+	}else{
+		return path.join(cwd(), pathString);
+	}
 }
