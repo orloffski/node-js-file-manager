@@ -38,7 +38,7 @@ const runCommand = async(command_line, currDirName) => {
 		case commands[3]:  // cat
 		  	return files.cat(command_line);
 		case commands[4]:  // add
-		  	console.log(commands[4]);
+		  	return files.add(command_line);
 			return true;
 		case commands[5]:  // rn
 		  	console.log(commands[5]);

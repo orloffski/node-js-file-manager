@@ -1,16 +1,16 @@
-import fs from 'node:fs';
+import fsPromises from 'node:fs/promises';
 
-import { checkFileDestination } from './parser.js';
+import { checkFileDestination, getPathAbsolute, getDestination } from './parser.js';
 
 export const cat = (command_line) => {
 	return new Promise((resolve, reject) => {
-		const filePath = command_line.split(' ')[1];
+		const filePath = getDestination(command_line);
 
 		if(!checkFileDestination(filePath)
 			.then(value => value)
 			.catch(err => false)){
 
-			resolove(false);
+			resolve(false);
 		}
 
 		const fileReadStream = fs.createReadStream(filePath);
@@ -24,5 +24,22 @@ export const cat = (command_line) => {
 		fileReadStream.on('error', () => {
 			resolve(false);
 		})
+	})
+}
+
+export const add = (command_line) => {
+	return new Promise((resolve, reject) => {
+		const filePath = getDestination(command_line);
+
+		if(!checkFileDestination(filePath)
+			.then(value => value)
+			.catch(err => false)){
+
+			resolve(false);
+		}
+
+		fsPromises.open(filePath, 'w')
+			.then(value => resolve(true))
+			.catch(err => resolve(false));
 	})
 }
