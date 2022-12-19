@@ -50,8 +50,7 @@ const runCommand = async(command_line, currDirName) => {
 		  	console.log(commands[7]);
 			return true;
 		case commands[8]:  // rm
-		  	console.log(commands[8]);
-			return true;
+		  	return files.remove(command_line);
 		case commands[9]:  // os
 		  	return os.getInfo(command_line);
 		case commands[10]:  // hash
