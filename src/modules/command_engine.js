@@ -45,8 +45,7 @@ const runCommand = async(command_line, currDirName) => {
 		case commands[6]:  // cp
 		  	return files.copy(command_line);
 		case commands[7]:  // mv
-		  	console.log(commands[7]);
-			return true;
+		  	return files.move(command_line);
 		case commands[8]:  // rm
 		  	return files.remove(command_line);
 		case commands[9]:  // os

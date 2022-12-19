@@ -79,8 +79,6 @@ export const rename = (command_line) => {
 			.then(value => value)
 			.catch(err => false)){
 
-				console.log('not file');
-
 			resolve(false);
 		}
 
@@ -118,5 +116,17 @@ export const copy = (command_line) => {
 			.catch(err => {
 				resolve(false)
 			});
+	})
+}
+
+export const move = (command_line) => {
+	return new Promise((resolve, reject) => {
+		copy(command_line)
+			.then(val => {
+				remove(command_line)
+					.then(val => resolve(true))
+					.catch(err => resolve(false));
+			})
+			.catch(err => resolve(false));
 	})
 }
