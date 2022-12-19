@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import path from 'node:path';
 import fsPromises from 'node:fs/promises';
 
 import { checkFileDestination, checkFolderDestination, getDestination, getPathAbsolute } from './parser.js';
@@ -86,5 +87,36 @@ export const rename = (command_line) => {
 		fsPromises.rename(fileOldName, fileNewName)
 			.then(val => resolve(true))
 			.catch(err => resolve(false));
+	})
+}
+
+export const copy = (command_line) => {
+	return new Promise((resolve, reject) => {
+		const destination = getDestination(command_line, 1, 3);
+		const fileSource = destination.first;
+		const fileDirectory = destination.second;
+
+		const fileName = path.basename(fileSource);
+
+		console.log(path.join(fileDirectory, fileName));
+
+		fsPromises.open(path.join(fileDirectory, fileName), 'w')
+			.then(value => {
+				const readStream = fs.createReadStream(fileSource);
+				const writeStream = fs.createWriteStream(path.join(fileDirectory, fileName));
+
+				readStream.pipe(writeStream);
+
+				readStream.on('end', () => {
+					resolve(true);
+				})
+
+				readStream.on('error', (err) => {
+					resolve(false);
+				})
+			})
+			.catch(err => {
+				resolve(false)
+			});
 	})
 }
