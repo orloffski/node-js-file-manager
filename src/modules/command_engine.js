@@ -1,3 +1,4 @@
+import * as files from "./files.js";
 import * as fs from "./file_system.js";
 import * as hash from "./hash.js";
 import * as os from "./os_info.js";
@@ -35,8 +36,7 @@ const runCommand = async(command_line, currDirName) => {
 		case commands[2]:  // ls
 			return await fs.ls_command(currDirName);
 		case commands[3]:  // cat
-		  	console.log(commands[3]);
-			return true;
+		  	return files.cat(command_line);
 		case commands[4]:  // add
 		  	console.log(commands[4]);
 			return true;
