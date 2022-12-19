@@ -11,7 +11,7 @@ export const getHash = async(command_line) => {
 			.then(value => value)
 			.catch(err => false)){
 
-			resolove(false);
+			resolve(false);
 		}
 
 		const fileReadStream = fs.createReadStream(filePath);
