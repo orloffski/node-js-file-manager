@@ -68,7 +68,7 @@ export const up_command = async(currentDir) => {
 
 export const cd_command = async(command_line) => {
 	try{
-		const destination = parser.getDestination(command_line, 1);
+		const destination = parser.getDestination(command_line, 1, 0).first;
 
 		if(!destination){
 			return false;

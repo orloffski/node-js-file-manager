@@ -3,22 +3,24 @@ import  { pipeline } from 'node:stream';
 import { createBrotliCompress, createBrotliDecompress } from 'node:zlib';
 import { createReadStream, createWriteStream } from 'node:fs';
 
-import { getPathAbsolute, checkFileDestination, checkFolderDestination, getDestination } from './parser.js';
+import { checkFileDestination, checkFolderDestination, getDestination } from './parser.js';
 
-export const compress = async(command_line) => {
+export const compress = (command_line) => {
 	return new Promise((resolve, reject) => {
 		try{
-			if(!checkLine(command_line)){
+			const destination = getDestination(command_line, 1, 3);
+
+			if(!destination || !destination.first || !destination.second){
 				resolve(false);
 			}
 
-			const fileName = path.basename(getDestination(command_line, 1));
+			const fileName = path.basename(destination.first);
 
 			const gzipBrotli = createBrotliCompress();
-			const source = createReadStream(getDestination(command_line, 1));
-			const destination = createWriteStream(path.join(getDestination(command_line, 3), fileName + '.gz'));
+			const fileFrom = createReadStream(destination.first);
+			const fileTo = createWriteStream(path.join(destination.second, fileName + '.gz'));
 
-			pipeline(source, gzipBrotli, destination, (err) => {
+			pipeline(fileFrom, gzipBrotli, fileTo, (err) => {
 				if(err){
 					resolve(false);
 				}else{
@@ -32,24 +34,26 @@ export const compress = async(command_line) => {
 	})
 }
 
-export const decompress = async(command_line) => {
+export const decompress = (command_line) => {
 	return new Promise((resolve, reject) => {
 		try{
-			if(!checkLine(command_line)){
+			const destination = getDestination(command_line, 1, 3);
+
+			if(!destination || !destination.first || !destination.second){
 				resolve(false);
 			}
 
-			const fileName = path.parse(getDestination(command_line, 1)).name;
+			const fileName = path.parse(destination.first).name;
 
 			const gzipBrotli = createBrotliDecompress();
-			const source = createReadStream(getDestination(command_line, 1));
-			const destination = createWriteStream(path.join(getDestination(command_line, 3), fileName));
+			const fileFrom = createReadStream(destination.first);
+			const fileTo = createWriteStream(path.join(destination.second, fileName));
 
-			pipeline(source, gzipBrotli, destination, (err) => {
+			pipeline(fileFrom, gzipBrotli, fileTo, (err) => {
 				if(err){
 					resolve(false);
 				}else{
-					console.log('File ' + path.basename(command_line.split(' ')[1]) + ' successfully decompressed');
+					console.log('File ' + path.basename(fileName) + ' successfully decompressed');
 					resolve(true);
 				}
 			})
@@ -57,17 +61,4 @@ export const decompress = async(command_line) => {
 			resolve(false);
 		}
 	})
-}
-
-const checkLine = (command_line) => {
-	if(command_line.split(' ').lenght < 3){
-		return false;
-	}
-
-	if(!checkFileDestination(command_line.split(' ')[1]).then(value => value).catch(err => false) || 
-		!checkFolderDestination(command_line.split(' ')[2]).then(value => value).catch(err => false)){
-		return false;
-	}
-
-	return true;
 }
