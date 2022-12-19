@@ -20,20 +20,22 @@ export const ls_command = async(currentDir) => {
 				.then(value => true)
 				.catch(err => false)){
 
-				await fs.stat(file).then(stats => {
-					if(stats.isFile()){
-						fileItem.type = 'file';
-					}
+				await fs.stat(file)
+					.then(stats => {
+						if(stats.isFile()){
+							fileItem.type = 'file';
+						}
 
-					if(stats.isDirectory()){
-						fileItem.type = 'directory';
-					}
+						if(stats.isDirectory()){
+							fileItem.type = 'directory';
+						}
 
-					if(stats.isDirectory() || stats.isFile()){
-						arrayForOutput.push(fileItem);
-					}
-				});
-			}
+						if(stats.isDirectory() || stats.isFile()){
+							arrayForOutput.push(fileItem);
+						}
+					})
+					.catch(err => {}) // skip files without permissions
+				}
 		}
 
 		arrayForOutput.sort((a,b) => {
@@ -87,7 +89,6 @@ export const cd_command = async(command_line) => {
 			return true;
 		}
 	}catch(err){
-		console.log(err);
 		return false;
 	}
 }

@@ -6,8 +6,6 @@ export const getInfo = async(command_line) => {
 	try{
 		const command = command_line.split(' ')[1];
 
-		console.log(command);
-
 		switch(command){
 			case '--EOL':
 				printLog.printEOL(os.EOL);
@@ -26,11 +24,12 @@ export const getInfo = async(command_line) => {
 			case '--architecture':
 				printLog.printArch(os.arch());
 				return true;
+			default:
+				return false;
 		}
 
 		return true;
 	}catch(err){
-		console.log(err);
 		return false;
 	}
 }
